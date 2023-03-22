@@ -38,7 +38,32 @@ export default function App() {
     },
     info: {
       flexDirection: 'row',
-    }
+    },
+    themeBtn: {
+      margin: 10,
+      marginLeft: 300,
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+    },
+    squareBtn: {
+      backgroundColor: darkTheme ? '#F2F2F2'  :'#8F8F8F', 
+      justifyContent: 'center',
+      borderRadius: 20,
+      marginRight: 20,
+      width: 50,
+      height: 25,
+    },
+    circleBtn: {
+      backgroundColor: darkTheme ? '#232634' : '#f2f2f2',
+      alignSelf: darkTheme ? 'flex-end' : 'flex-start',
+      margin: 5,
+      width: 20,
+      height: 20,
+      borderRadius: 50
+    }  
   });
 
   return (
@@ -59,18 +84,18 @@ export default function App() {
 
       <View style={styles.info}>
         <View style={{ alignItems: 'center' }}>
-          <Feather name="wind" size={24} color="white" />
-          <Informations title={'Vento'} value={wind + ' km/h'}></Informations>
+          <Feather name="wind" size={24} color={darkTheme ? '#e0e0e0' : 'black'} />
+          <Informations title={'Vento'} value={wind + ' km/h'} style={styles.temperatureText}></Informations>
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Ionicons name="water-outline" size={24} color="white" />
+          <Ionicons name="water-outline" size={24} color={darkTheme ? '#e0e0e0' : 'black'} />
           <Informations title={'Umidade'} value={umidity + '%'}></Informations>
         </View>
       </View>
 
-      <View>
-        <View>
-
+      <View style={styles.themeBtn}>
+        <View style={styles.squareBtn}>
+          <TouchableOpacity style={styles.circleBtn} onPress={() => darkTheme ? setDarkTheme(false) : setDarkTheme(true)}></TouchableOpacity>
         </View>
       </View>
     </View>
