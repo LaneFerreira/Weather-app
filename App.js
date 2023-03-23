@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import Informations from './components/Informations'
 import { Feather } from '@expo/vector-icons';
+import * as Location from 'expo-location'
+import getCurrentWeather from './api/ConsultApi'
 
 export default function App() {
 
@@ -15,6 +17,7 @@ export default function App() {
 
   const [wind, setWind] = useState('65')
   const [umidity, setUmiduty] = useState('80')
+  const [locationCoords, setLocationCoords] = useState([])
 
   const styles = StyleSheet.create({
     container: {
@@ -66,9 +69,30 @@ export default function App() {
     }  
   });
 
+  async function setCurretWeather(){
+    await getLocation()
+    
+    const data = await getCurrentWeather(locationCoords)
+    console.log(data);
+  }
+
+  async function getLocation(){
+    let { status } = await Location.requestPermissionsAsync()
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied')
+      }else{
+        let location = await Location.getCurrentPositionAsync({})
+        await setLocationCoords(location.coords)
+      }
+  }
+
+  useEffect(() => {
+    setCurretWeather()
+  },[])
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.refreshBtn}>
+      <TouchableOpacity onPress={() => setCurretWeather()} style={styles.refreshBtn}>
         <Ionicons name="refresh" size={32} color={darkTheme ? 'white' : 'black'} />
       </TouchableOpacity>
 
